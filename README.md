@@ -2,16 +2,40 @@
 
 ## Requirements
 
-- Python v3.11
+- Python v3.11 or higher
 - Poetry v1.8.2 or higher
 
 ## Setup
 
-Step 1: Configure .env
+Step 1: Install latest poetry package
+
+```
+pip install poetry==1.8.2
+```
+
+Step 2: Create vitual environment for Python
+
+```
+python -m venv .venv
+```
+
+Step 3: Activate venv
+
+```
+source .venv/bin/activate
+```
+
+Step 4: Install libraries
+
+```
+poetry install
+```
+
+Step 5: Configure .env
 
 Copy the `.env.example` to `.env`, then replace your config value.
 
-Step 2: Run command:
+Step 6: Run command:
 
 ```
 $ docker-compose up -d
