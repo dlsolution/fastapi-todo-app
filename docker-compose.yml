@@ -1,0 +1,56 @@
+version: "3.8"
+services:
+  api:
+    container_name: todo_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8000"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - /app/.venv
+    command:
+      [
+        "poetry",
+        "run",
+        "uvicorn",
+        "app.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--reload"
+      ]
+    environment:
+      - WATCHFILES_FORCE_POLLING=1
+
+  db:
+    container_name: todo_db
+    image: mysql:8.0.32
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - '3306:3306'
+    command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
+    volumes:
+      - db:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+  redis:
+      container_name: todo_redis
+      image: redis:7.0-alpine
+      restart: always
+      ports:
+        - "6379:6379"
+      volumes:
+        - redis:/data
+
+volumes:
+  db:
+    driver: local
+  redis:
+    driver: local

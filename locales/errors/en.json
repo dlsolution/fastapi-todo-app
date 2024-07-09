@@ -1,0 +1,46 @@
+{
+  "SYS-0400": {
+    "title": "INVALID_PARAMETER BAD_REQUEST",
+    "message": "Validation error / Bad request."
+  },
+  "SYS-0401": {
+    "title": "UNAUTHORIZED_ACCESS",
+    "message": "Unauthorized."
+  },
+  "SYS-0403": {
+    "title": "ACTION_NOT_ALLOWED",
+    "message": "Action not allow."
+  },
+  "SYS-0404": {
+    "title": "OBJECT_NOT_FOUND",
+    "message": "Page not found, data not found."
+  },
+  "SYS-0500": {
+    "title": "INTERNAL_SERVER_ERROR",
+    "message": "Internal server error."
+  },
+  "SYS-0900": {
+    "title": "System error",
+    "message": "An unknown error occurred. If the problem continues, please contact us."
+  },
+  "VAL-0001": {
+    "title": "System error",
+    "message": "This field is required. Please enter a value."
+  },
+  "VAL-0002": {
+    "title": "System error",
+    "message": "You have input wrong value for this field. Please correct it and try again."
+  },
+  "VAL-0003": {
+    "title": "System error",
+    "message": "Please choose one of a list of defined values for this field."
+  },
+  "VAL-0004": {
+    "title": "System error",
+    "message": "Please check the value you have inputted for this field and try again."
+  },
+  "RES-0404": {
+    "title": "Object not found",
+    "message": "The requested object could not be found. Please check if it exists or has been removed."
+  }
+}
