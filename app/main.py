@@ -1,10 +1,12 @@
-from fastapi import FastAPI, HTTPException, Request, Depends
+from fastapi import FastAPI, HTTPException, Request, Depends, BackgroundTasks
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from app.api.middlewares.exception_handlers import ExceptionHandlerMiddleware
 from config.config import Settings, get_settings
 from typing_extensions import Annotated
 from app import api
 from .api.middlewares.authentication import AuthenticationMiddleware
+
 
 def init_exception_handlers(app_: FastAPI) -> None:
     def raise_all_exceptions(request: Request, exception: Exception):
@@ -22,6 +24,13 @@ class UnicornException(Exception):
 
 
 def init_middlewares(app_: FastAPI) -> None:
+    app_.add_middleware(
+        CORSMiddleware, 
+        allow_credentials=True,
+        allow_origins=['*'],
+        allow_methods=['*'],
+        allow_headers=['*']
+    )
     app_.add_middleware(AuthenticationMiddleware)
 
 
@@ -40,13 +49,6 @@ def create_app() -> FastAPI:
 app = create_app()
 
 
-@app.get("/items/{item_id}")
-async def read_item(item_id: int):
-    if item_id == 3:
-        raise HTTPException(status_code=400, detail="This is a bad request")
-    return {"item_id": item_id}
-
-
 @app.get("/info")
 async def info(settings: Annotated[Settings, Depends(get_settings)]):
     return {
@@ -54,3 +56,15 @@ async def info(settings: Annotated[Settings, Depends(get_settings)]):
         "admin_email": settings.admin_email,
         "items_per_user": settings.items_per_user,
     }
+
+
+def write_notification(email: str, message=""):
+    with open("log.txt", mode="w") as email_file:
+        content = f"notification for {email}: {message}"
+        email_file.write(content)
+
+
+@app.post("/send-notification/{email}")
+async def send_notification(email: str, background_tasks: BackgroundTasks):
+    background_tasks.add_task(write_notification, email, message="some notification")
+    return {"message": "Notification sent in the background"}

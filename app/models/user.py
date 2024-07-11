@@ -11,5 +11,6 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    role = Column(String(50), nullable=True)
 
     items = relationship("Item", back_populates="owner")
